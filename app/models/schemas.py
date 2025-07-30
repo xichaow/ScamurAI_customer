@@ -1,13 +1,13 @@
 """
 Pydantic models for request/response validation.
 """
-from typing import Optional, Dict
-from pydantic import BaseModel, Field
+from typing import Optional, Dict, Any
+from pydantic import BaseModel
 
 
 class ChatStartRequest(BaseModel):
     """Request model for starting a new chat session."""
-    session_id: str = Field(..., description="Unique session identifier")
+    session_id: str
 
 
 class ChatStartResponse(BaseModel):
@@ -19,8 +19,8 @@ class ChatStartResponse(BaseModel):
 
 class ChatResponseRequest(BaseModel):
     """Request model for chat responses."""
-    session_id: str = Field(..., description="Session identifier")
-    message: str = Field(..., min_length=1, description="User message")
+    session_id: str
+    message: str
 
 
 class ChatResponseResponse(BaseModel):
@@ -52,10 +52,7 @@ class ConversationSession(BaseModel):
     """Model for conversation session data."""
     session_id: str
     current_question_index: int = 0
-    answers: Dict[str, str] = Field(default_factory=dict)
+    answers: Dict[str, str] = {}
     retry_count: int = 0
     completed: bool = False
     start_time: float
-    
-    class Config:
-        arbitrary_types_allowed = True
