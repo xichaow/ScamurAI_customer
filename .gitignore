@@ -11,9 +11,19 @@ ENV/
 env.bak/
 venv.bak/
 
-# Environment variables
+# Environment variables - NEVER COMMIT THESE!
 .env
 .env.*
+.env.local
+.env.production
+.env.development
+*.env
+
+# API Keys and secrets
+*key*
+*secret*
+*token*
+credentials.json
 
 # IDE
 .vscode/

@@ -10,30 +10,25 @@ from ..services.conversation_engine import ConversationEngine
 load_dotenv()
 
 # Global instances
-_openai_client = None
 _conversation_engine = None
 
 
-def get_openai_client() -> openai.OpenAI:
+def get_openai_client():
     """
-    Get OpenAI client instance (singleton).
+    Get OpenAI client configured with API key.
     
     Returns:
-        openai.OpenAI: OpenAI client instance.
+        configured openai module
         
     Raises:
         ValueError: If OPENAI_API_KEY is not set.
     """
-    global _openai_client
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("OPENAI_API_KEY environment variable is required")
     
-    if _openai_client is None:
-        api_key = os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            raise ValueError("OPENAI_API_KEY environment variable is required")
-        
-        _openai_client = openai.OpenAI(api_key=api_key)
-    
-    return _openai_client
+    openai.api_key = api_key
+    return openai
 
 
 def get_conversation_engine() -> ConversationEngine:

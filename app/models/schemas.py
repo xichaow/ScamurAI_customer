@@ -1,7 +1,7 @@
 """
 Pydantic models for request/response validation.
 """
-from typing import Optional
+from typing import Optional, Dict
 from pydantic import BaseModel, Field
 
 
@@ -52,7 +52,10 @@ class ConversationSession(BaseModel):
     """Model for conversation session data."""
     session_id: str
     current_question_index: int = 0
-    answers: dict = Field(default_factory=dict)
+    answers: Dict[str, str] = Field(default_factory=dict)
     retry_count: int = 0
     completed: bool = False
     start_time: float
+    
+    class Config:
+        arbitrary_types_allowed = True

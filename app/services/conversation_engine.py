@@ -4,7 +4,6 @@ Handles question flow, response validation, and fraud analysis.
 """
 import time
 from typing import Dict, Optional, Tuple
-import openai
 from ..models.schemas import ConversationSession, FraudQuestion, ChatStartResponse, ChatResponseResponse
 
 
@@ -41,12 +40,12 @@ class ConversationEngine:
     and fraud analysis using OpenAI API.
     """
     
-    def __init__(self, openai_client: openai.OpenAI):
+    def __init__(self, openai_client):
         """
         Initialize conversation engine.
         
         Args:
-            openai_client (openai.OpenAI): OpenAI client instance.
+            openai_client: OpenAI client module.
         """
         self.openai_client = openai_client
         self.sessions: Dict[str, ConversationSession] = {}
@@ -196,14 +195,14 @@ Consider these as INVALID responses:
 - Responses that ask questions back instead of answering
 """
 
-            response = self.openai_client.chat.completions.create(
+            response = self.openai_client.ChatCompletion.create(
                 model='gpt-3.5-turbo',
                 messages=[{'role': 'user', 'content': prompt}],
                 max_tokens=10,
                 temperature=0
             )
             
-            return response.choices[0].message.content.strip().lower() == 'true'
+            return response['choices'][0]['message']['content'].strip().lower() == 'true'
         except Exception as e:
             print(f"Error validating response: {e}")
             # Default to accepting response if validation fails
@@ -236,14 +235,14 @@ RISK LEVEL: [LOW/MEDIUM/HIGH]
 ANALYSIS: [Your assessment and recommendations]
 """
 
-            response = self.openai_client.chat.completions.create(
+            response = self.openai_client.ChatCompletion.create(
                 model='gpt-3.5-turbo',
                 messages=[{'role': 'user', 'content': prompt}],
                 max_tokens=200,
                 temperature=0.3
             )
             
-            return response.choices[0].message.content.strip()
+            return response['choices'][0]['message']['content'].strip()
         except Exception as e:
             print(f"Error performing fraud analysis: {e}")
             return 'RISK LEVEL: UNKNOWN\nANALYSIS: Unable to complete fraud analysis due to technical issues. Please verify payment details independently and consult with your bank if you have concerns.'
