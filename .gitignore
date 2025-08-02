@@ -19,6 +19,9 @@ venv.bak/
 .env.development
 *.env
 
+# Example
+example/
+
 # API Keys and secrets
 *key*
 *secret*
