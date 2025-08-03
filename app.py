@@ -330,9 +330,9 @@ def chat():
         }
         .chat-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 30px 25px; text-align: center; position: relative;
+            color: white; padding: 40px 25px 30px 25px; text-align: center; position: relative;
         }
-        .header-nav { position: absolute; top: 20px; left: 20px; }
+        .header-nav { position: absolute; top: 15px; left: 15px; }
         .back-button { color: white; text-decoration: none; font-size: 14px; opacity: 0.9; transition: opacity 0.3s ease; }
         .back-button:hover { opacity: 1; }
         .chat-header h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
