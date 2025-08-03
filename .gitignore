@@ -28,6 +28,11 @@ example/
 *token*
 credentials.json
 
+#requirements
+CLAUDE.md
+INITIAL.md
+PRP.md
+
 # IDE
 .vscode/
 .idea/
@@ -45,3 +50,20 @@ htmlcov/
 
 # Logs
 *.log
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# Additional Flask files
+instance/
+.flaskenv
+
+# Additional requirements files (keep only main one)
+requirements-*.txt
