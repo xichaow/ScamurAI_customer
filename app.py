@@ -568,12 +568,18 @@ def respond_chat():
     session_id = data.get('session_id')
     user_message = data.get('message')
     
+    print(f"DEBUG: Processing response for session {session_id}")
+    print(f"DEBUG: User message: {user_message}")
+    
     if not session_id or not user_message:
         return jsonify({'success': False, 'message': 'Session ID and message are required'}), 400
     
     session = sessions.get(session_id)
     if not session:
         return jsonify({'success': False, 'message': 'Session not found. Please refresh and start again.'}), 404
+    
+    print(f"DEBUG: Session found. Question index: {session['current_question_index']}")
+    print(f"DEBUG: Session completed: {session['completed']}")
     
     if session['completed']:
         return jsonify({'success': True, 'message': 'Thank you! Your fraud assessment has been completed.', 'completed': True})
@@ -615,10 +621,18 @@ def move_to_next_question(session):
     """Move to the next question or complete the conversation."""
     session['current_question_index'] += 1
     
+    print(f"DEBUG: Moving to question index: {session['current_question_index']}")
+    print(f"DEBUG: Total questions: {len(FRAUD_QUESTIONS)}")
+    
     if session['current_question_index'] >= len(FRAUD_QUESTIONS):
         # All questions completed, perform fraud analysis
+        print("DEBUG: All questions completed, starting fraud analysis")
+        print(f"DEBUG: Collected answers: {session['answers']}")
+        
         session['completed'] = True
         fraud_analysis = perform_fraud_analysis(session['answers'])
+        
+        print(f"DEBUG: Fraud analysis result: {fraud_analysis}")
         
         return jsonify({
             'success': True,
@@ -628,6 +642,8 @@ def move_to_next_question(session):
         })
     
     next_question = FRAUD_QUESTIONS[session['current_question_index']]
+    print(f"DEBUG: Next question: {next_question['question']}")
+    
     return jsonify({
         'success': True,
         'message': next_question['question']
