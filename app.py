@@ -46,6 +46,12 @@ def validate_response(user_message: str, question: dict) -> bool:
         return False
     
     try:
+        # Debug: Check API key for validation too
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            print("DEBUG: No API key for validation, skipping validation")
+            return True
+            
         prompt = f"""
 Evaluate if this user response is relevant to the fraud detection question asked.
 
@@ -68,6 +74,7 @@ Consider these as INVALID responses:
 - Responses that ask questions back instead of answering
 """
 
+        print("DEBUG: Calling OpenAI for response validation")
         response = openai.ChatCompletion.create(
             model='gpt-3.5-turbo',
             messages=[{'role': 'user', 'content': prompt}],
@@ -75,14 +82,27 @@ Consider these as INVALID responses:
             temperature=0
         )
         
-        return response['choices'][0]['message']['content'].strip().lower() == 'true'
+        result = response['choices'][0]['message']['content'].strip().lower() == 'true'
+        print(f"DEBUG: Validation result: {result}")
+        return result
+        
     except Exception as e:
-        print(f"Error validating response: {e}")
+        print(f"ERROR: Validation failed: {str(e)}")
+        print(f"ERROR: Validation exception type: {type(e).__name__}")
         return True
 
 def perform_fraud_analysis(answers: Dict[str, str]) -> str:
     """Perform fraud risk analysis using OpenAI."""
     try:
+        # Debug: Check if API key is set
+        api_key = os.getenv("OPENAI_API_KEY")
+        print(f"DEBUG: API Key exists: {bool(api_key)}")
+        print(f"DEBUG: API Key starts with sk-: {api_key.startswith('sk-') if api_key else False}")
+        
+        if not api_key:
+            print("ERROR: OPENAI_API_KEY not found in environment variables")
+            return 'RISK LEVEL: UNKNOWN\nANALYSIS: OpenAI API key not configured. Please contact administrator.'
+        
         prompt = f"""
 You are a fraud detection expert. Analyze these payment details and provide a risk assessment.
 
@@ -99,6 +119,7 @@ RISK LEVEL: [LOW/MEDIUM/HIGH]
 ANALYSIS: [Your assessment and recommendations]
 """
 
+        print("DEBUG: About to call OpenAI API")
         response = openai.ChatCompletion.create(
             model='gpt-3.5-turbo',
             messages=[{'role': 'user', 'content': prompt}],
@@ -106,10 +127,17 @@ ANALYSIS: [Your assessment and recommendations]
             temperature=0.3
         )
         
-        return response['choices'][0]['message']['content'].strip()
+        print("DEBUG: OpenAI API call successful")
+        result = response['choices'][0]['message']['content'].strip()
+        print(f"DEBUG: OpenAI response length: {len(result)}")
+        return result
+        
     except Exception as e:
-        print(f"Error performing fraud analysis: {e}")
-        return 'RISK LEVEL: UNKNOWN\nANALYSIS: Unable to complete fraud analysis due to technical issues. Please verify payment details independently and consult with your bank if you have concerns.'
+        print(f"ERROR: Fraud analysis failed: {str(e)}")
+        print(f"ERROR: Exception type: {type(e).__name__}")
+        import traceback
+        print(f"ERROR: Full traceback: {traceback.format_exc()}")
+        return f'RISK LEVEL: UNKNOWN\nANALYSIS: OpenAI API Error: {str(e)}. Please verify payment details independently and consult with your bank if you have concerns.'
 
 @app.route('/')
 def home():
