@@ -6,10 +6,10 @@ import json
 import time
 from typing import Dict, Optional
 from flask import Flask, request, jsonify, render_template_string
-import openai
+from openai import OpenAI
 
-# Set up OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Set up OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = Flask(__name__)
 
@@ -75,14 +75,14 @@ Consider these as INVALID responses:
 """
 
         print("DEBUG: Calling OpenAI for response validation")
-        response = openai.Completion.create(
-            model='text-davinci-003',
-            prompt=prompt,
+        response = client.chat.completions.create(
+            model='gpt-3.5-turbo',
+            messages=[{'role': 'user', 'content': prompt}],
             max_tokens=10,
             temperature=0
         )
         
-        result = response['choices'][0]['text'].strip().lower() == 'true'
+        result = response.choices[0].message.content.strip().lower() == 'true'
         print(f"DEBUG: Validation result: {result}")
         return result
         
@@ -120,15 +120,15 @@ ANALYSIS: [Your assessment and recommendations]
 """
 
         print("DEBUG: About to call OpenAI API")
-        response = openai.Completion.create(
-            model='text-davinci-003',
-            prompt=prompt,
+        response = client.chat.completions.create(
+            model='gpt-3.5-turbo',
+            messages=[{'role': 'user', 'content': prompt}],
             max_tokens=200,
             temperature=0.3
         )
         
         print("DEBUG: OpenAI API call successful")
-        result = response['choices'][0]['text'].strip()
+        result = response.choices[0].message.content.strip()
         print(f"DEBUG: OpenAI response length: {len(result)}")
         return result
         
