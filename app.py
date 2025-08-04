@@ -390,8 +390,7 @@ def chat():
             border: none;
         }
         .user-message .message-avatar { 
-            background: #dc143c; color: white; order: 2; 
-            border: 2px solid #dc143c; font-size: 14px;
+            display: none;
         }
         .message-content-wrapper { flex: 1; }
         .message-content {
@@ -563,7 +562,7 @@ def chat():
                 const avatarDiv = document.createElement('div');
                 avatarDiv.className = 'message-avatar';
                 if (type === 'user') {
-                    avatarDiv.innerHTML = '&#x1F464;';
+                    avatarDiv.style.display = 'none';
                 }
                 
                 const wrapperDiv = document.createElement('div');
