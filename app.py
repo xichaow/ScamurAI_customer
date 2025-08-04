@@ -579,7 +579,7 @@ def chat():
                 
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'message-content';
-                contentDiv.innerHTML = text.replace(/\n/g, '<br>');
+                contentDiv.textContent = text;
                 
                 const timeDiv = document.createElement('div');
                 timeDiv.className = 'message-time';
