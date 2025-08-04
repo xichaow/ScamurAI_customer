@@ -101,7 +101,7 @@ def perform_fraud_analysis(answers: Dict[str, str]) -> str:
         
         if not api_key:
             print("ERROR: OPENAI_API_KEY not found in environment variables")
-            return '**RISK LEVEL: UNKNOWN**\n\n**ANALYSIS:**\n• OpenAI API key not configured\n• Please contact administrator\n• Cannot perform fraud analysis without API access'
+            return '**RISK LEVEL: UNKNOWN**\n\n**ANALYSIS:**\n\n• OpenAI API key not configured\n\n• Please contact administrator\n\n• Cannot perform fraud analysis without API access'
         
         prompt = f"""
 You are a fraud detection expert. Analyze these payment details and provide a risk assessment.
@@ -118,9 +118,13 @@ Format your response EXACTLY as follows:
 **RISK LEVEL: [LOW/MEDIUM/HIGH]**
 
 **ANALYSIS:**
+
 • [Key risk factor or positive indicator 1]
-• [Key risk factor or positive indicator 2] 
+
+• [Key risk factor or positive indicator 2]
+
 • [Key risk factor or positive indicator 3]
+
 • [Recommendation or next step]
 """
 
@@ -142,7 +146,7 @@ Format your response EXACTLY as follows:
         print(f"ERROR: Exception type: {type(e).__name__}")
         import traceback
         print(f"ERROR: Full traceback: {traceback.format_exc()}")
-        return f'**RISK LEVEL: UNKNOWN**\n\n**ANALYSIS:**\n• OpenAI API Error: {str(e)}\n• Please verify payment details independently\n• Consult with your bank if you have concerns'
+        return f'**RISK LEVEL: UNKNOWN**\n\n**ANALYSIS:**\n\n• OpenAI API Error: {str(e)}\n\n• Please verify payment details independently\n\n• Consult with your bank if you have concerns'
 
 @app.route('/')
 def home():
@@ -575,7 +579,7 @@ def chat():
                 
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'message-content';
-                contentDiv.textContent = text;
+                contentDiv.innerHTML = text.replace(/\n/g, '<br>');
                 
                 const timeDiv = document.createElement('div');
                 timeDiv.className = 'message-time';
