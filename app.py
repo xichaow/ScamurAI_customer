@@ -117,8 +117,6 @@ Provide a clear, concise fraud risk assessment with key points in bullet format.
 Format your response EXACTLY as follows:
 **RISK LEVEL: [LOW/MEDIUM/HIGH]**
 
-**ANALYSIS:**
-
 • [Key risk factor or positive indicator 1]
 
 • [Key risk factor or positive indicator 2]
