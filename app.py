@@ -382,8 +382,14 @@ def chat():
             width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             flex-shrink: 0; font-size: 16px; margin-top: 5px;
         }
-        .bot-message .message-avatar { background: #dc143c; color: white; }
-        .user-message .message-avatar { background: #666; color: white; order: 2; }
+        .bot-message .message-avatar { 
+            background: #dc143c; color: white; 
+            font-size: 14px; font-weight: bold;
+        }
+        .user-message .message-avatar { 
+            background: #dc143c; color: white; order: 2; 
+            border: 2px solid #dc143c; font-size: 14px;
+        }
         .message-content-wrapper { flex: 1; }
         .message-content {
             padding: 12px 16px; border-radius: 16px; word-wrap: break-word; line-height: 1.4;
@@ -402,21 +408,24 @@ def chat():
             font-size: 11px; color: #999; margin-top: 2px; padding: 0 4px;
         }
         .user-message .message-time { text-align: right; }
-        .chat-input-container { padding: 20px; border-top: 1px solid #e0e0e0; display: flex; gap: 12px; }
+        .chat-input-container { 
+            padding: 15px 20px; border-top: 1px solid #e0e0e0; display: flex; 
+            align-items: center; gap: 10px; background: white;
+        }
         .chat-input {
-            flex: 1; padding: 12px 16px; border: 1px solid #ccc; border-radius: 20px;
-            font-size: 16px; outline: none; transition: border-color 0.3s ease;
-            background: white;
+            flex: 1; padding: 12px 16px; border: none; border-radius: 0;
+            font-size: 16px; outline: none; background: transparent;
+            border-bottom: 1px solid transparent;
         }
-        .chat-input:focus { border-color: #007bff; }
-        .chat-input:disabled { background-color: #f5f5f5; cursor: not-allowed; }
+        .chat-input:focus { border-bottom-color: #dc143c; }
+        .chat-input:disabled { background-color: transparent; cursor: not-allowed; color: #999; }
         .send-button {
-            padding: 12px 20px; background: #007bff;
-            color: white; border: none; border-radius: 20px; font-size: 16px; font-weight: 500;
-            cursor: pointer; transition: background-color 0.2s ease;
+            background: none; border: none; color: #dc143c; 
+            font-size: 16px; font-weight: 500; cursor: pointer;
+            padding: 8px 0; transition: opacity 0.2s ease;
         }
-        .send-button:hover:not(:disabled) { background: #0056b3; }
-        .send-button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .send-button:hover:not(:disabled) { opacity: 0.7; }
+        .send-button:disabled { opacity: 0.3; cursor: not-allowed; }
         .loading { display: none; justify-content: center; padding: 20px; }
         .loading-dots { display: flex; gap: 5px; }
         .loading-dots span {
@@ -440,7 +449,7 @@ def chat():
         <div class="chat-messages" id="chatMessages">
             <div style="text-align: center; color: #999; font-size: 14px; margin: 20px 0;">Today</div>
             <div class="message bot-message">
-                <div class="message-avatar">🍁</div>
+                <div class="message-avatar">&#x2605;</div>
                 <div class="message-content-wrapper">
                     <div class="message-content">
                         Hello! I'm here to help protect you from fraudulent transactions. I'll ask you a few questions to assess the safety of your payment. Let's start!
@@ -451,7 +460,7 @@ def chat():
         </div>
         
         <div class="chat-input-container">
-            <input type="text" id="userInput" class="chat-input" placeholder="Type your response here..." disabled>
+            <input type="text" id="userInput" class="chat-input" placeholder="Type a message" disabled>
             <button id="sendButton" class="send-button" disabled>Send</button>
         </div>
         
@@ -550,7 +559,7 @@ def chat():
                 
                 const avatarDiv = document.createElement('div');
                 avatarDiv.className = 'message-avatar';
-                avatarDiv.textContent = type === 'bot' ? '🍁' : '👤';
+                avatarDiv.innerHTML = type === 'bot' ? '&#x2605;' : '&#x1F464;';
                 
                 const wrapperDiv = document.createElement('div');
                 wrapperDiv.className = 'message-content-wrapper';
