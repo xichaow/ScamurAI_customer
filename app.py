@@ -546,7 +546,7 @@ def chat():
                         if (data.completed && data.fraud_analysis) {
                             setTimeout(() => {
                                 this.addMessage('Based on your responses, here is my fraud risk assessment:', 'bot');
-                                setTimeout(() => this.addMessage(data.fraud_analysis, 'bot'), 1000);
+                                setTimeout(() => this.addFormattedMessage(data.fraud_analysis, 'bot'), 1000);
                             }, 1000);
                             this.disableInput();
                         } else if (!data.completed) {
@@ -580,6 +580,44 @@ def chat():
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'message-content';
                 contentDiv.textContent = text;
+                
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'message-time';
+                const now = new Date();
+                timeDiv.textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                wrapperDiv.appendChild(contentDiv);
+                wrapperDiv.appendChild(timeDiv);
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(wrapperDiv);
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+            
+            addFormattedMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}-message`;
+                
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'message-avatar';
+                if (type === 'user') {
+                    avatarDiv.style.display = 'none';
+                }
+                
+                const wrapperDiv = document.createElement('div');
+                wrapperDiv.className = 'message-content-wrapper';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                
+                // Format the risk assessment output
+                let formattedText = text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/• /g, '<br>• ')
+                    .replace(/\*\*ANALYSIS:\*\*/g, '<strong>ANALYSIS:</strong><br>');
+                
+                contentDiv.innerHTML = formattedText;
                 
                 const timeDiv = document.createElement('div');
                 timeDiv.className = 'message-time';
