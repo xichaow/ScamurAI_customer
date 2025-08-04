@@ -5,7 +5,7 @@ import os
 import json
 import time
 from typing import Dict, Optional
-from flask import Flask, request, jsonify, render_template_string
+from flask import Flask, request, jsonify, render_template_string, send_from_directory
 import openai
 
 # Set up OpenAI API key
@@ -383,12 +383,11 @@ def chat():
             flex-shrink: 0; font-size: 16px; margin-top: 5px;
         }
         .bot-message .message-avatar { 
-            background: #dc143c; color: white; 
-            font-size: 14px; font-weight: bold;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 L65 35 L90 35 L72 52 L78 78 L50 65 L22 78 L28 52 L10 35 L35 35 Z" fill="white"/><path d="M65 45 L75 35 L85 45 M70 40 L80 40" stroke="white" stroke-width="3" fill="none"/></svg>');
-            background-size: 18px 18px;
+            background-image: url('/static/nab-icon.jpg');
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+            border: none;
         }
         .user-message .message-avatar { 
             background: #dc143c; color: white; order: 2; 
@@ -711,6 +710,11 @@ def move_to_next_question(session):
         'success': True,
         'message': next_question['question']
     })
+
+@app.route('/static/<filename>')
+def static_files(filename):
+    """Serve static files."""
+    return send_from_directory('static', filename)
 
 @app.route('/health')
 def health():
