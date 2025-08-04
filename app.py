@@ -579,7 +579,15 @@ def chat():
                 
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'message-content';
-                contentDiv.textContent = text;
+                // Format the text for better display of risk analysis
+                let formattedText = text;
+                if (text.includes('**RISK LEVEL:') && text.includes('**ANALYSIS:**')) {
+                    formattedText = text
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/• /g, '\n• ')
+                        .replace(/\n/g, '<br>');
+                }
+                contentDiv.innerHTML = formattedText;
                 
                 const timeDiv = document.createElement('div');
                 timeDiv.className = 'message-time';
