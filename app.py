@@ -385,6 +385,10 @@ def chat():
         .bot-message .message-avatar { 
             background: #dc143c; color: white; 
             font-size: 14px; font-weight: bold;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 L65 35 L90 35 L72 52 L78 78 L50 65 L22 78 L28 52 L10 35 L35 35 Z" fill="white"/><path d="M65 45 L75 35 L85 45 M70 40 L80 40" stroke="white" stroke-width="3" fill="none"/></svg>');
+            background-size: 18px 18px;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         .user-message .message-avatar { 
             background: #dc143c; color: white; order: 2; 
@@ -449,7 +453,7 @@ def chat():
         <div class="chat-messages" id="chatMessages">
             <div style="text-align: center; color: #999; font-size: 14px; margin: 20px 0;">Today</div>
             <div class="message bot-message">
-                <div class="message-avatar">&#x2605;</div>
+                <div class="message-avatar"></div>
                 <div class="message-content-wrapper">
                     <div class="message-content">
                         Hello! I'm here to help protect you from fraudulent transactions. I'll ask you a few questions to assess the safety of your payment. Let's start!
@@ -559,7 +563,9 @@ def chat():
                 
                 const avatarDiv = document.createElement('div');
                 avatarDiv.className = 'message-avatar';
-                avatarDiv.innerHTML = type === 'bot' ? '&#x2605;' : '&#x1F464;';
+                if (type === 'user') {
+                    avatarDiv.innerHTML = '&#x1F464;';
+                }
                 
                 const wrapperDiv = document.createElement('div');
                 wrapperDiv.className = 'message-content-wrapper';
