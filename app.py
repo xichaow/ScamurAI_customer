@@ -357,40 +357,66 @@ def chat():
             width: 100%; max-width: 500px; height: 600px; display: flex; flex-direction: column; overflow: hidden;
         }
         .chat-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 40px 25px 30px 25px; text-align: center; position: relative;
+            background: white; border-bottom: 1px solid #e0e0e0;
+            color: #333; padding: 15px 20px; text-align: center; position: relative;
         }
-        .header-nav { position: absolute; top: 15px; left: 15px; }
-        .back-button { color: white; text-decoration: none; font-size: 14px; opacity: 0.9; transition: opacity 0.3s ease; }
-        .back-button:hover { opacity: 1; }
-        .chat-header h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
-        .chat-header p { font-size: 14px; opacity: 0.9; }
+        .header-nav { 
+            position: absolute; top: 50%; left: 20px; transform: translateY(-50%);
+        }
+        .back-button { 
+            color: #dc143c; text-decoration: none; font-size: 24px; 
+            font-weight: bold; transition: opacity 0.3s ease;
+        }
+        .back-button:hover { opacity: 0.7; }
+        .chat-header h1 { 
+            font-size: 18px; font-weight: 600; margin: 0; 
+            color: #333; letter-spacing: 0.5px;
+        }
         .chat-messages { 
             flex: 1; padding: 20px; overflow-y: auto; scroll-behavior: smooth; 
+            background: #f8f9fa;
         }
-        .message { margin-bottom: 20px; animation: fadeIn 0.3s ease-in; }
+        .message { margin-bottom: 20px; animation: fadeIn 0.3s ease-in; display: flex; align-items: flex-start; gap: 10px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .message-avatar {
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 16px; margin-top: 5px;
+        }
+        .bot-message .message-avatar { background: #dc143c; color: white; }
+        .user-message .message-avatar { background: #666; color: white; order: 2; }
+        .message-content-wrapper { flex: 1; }
         .message-content {
-            padding: 15px 20px; border-radius: 18px; max-width: 85%; word-wrap: break-word; line-height: 1.4;
+            padding: 12px 16px; border-radius: 16px; word-wrap: break-word; line-height: 1.4;
+            margin-bottom: 4px; max-width: 85%;
         }
-        .bot-message .message-content { background: #f1f3f4; color: #333; margin-right: auto; }
+        .bot-message .message-content { 
+            background: white; color: #333; border: 1px solid #e0e0e0; 
+            border-radius: 16px 16px 16px 4px;
+        }
         .user-message .message-content { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-left: auto; 
+            background: #007bff; color: white; margin-left: auto; 
+            border-radius: 16px 16px 4px 16px;
         }
+        .user-message .message-content-wrapper { order: 1; text-align: right; }
+        .message-time {
+            font-size: 11px; color: #999; margin-top: 2px; padding: 0 4px;
+        }
+        .user-message .message-time { text-align: right; }
         .chat-input-container { padding: 20px; border-top: 1px solid #e0e0e0; display: flex; gap: 12px; }
         .chat-input {
-            flex: 1; padding: 15px 20px; border: 1px solid #e0e0e0; border-radius: 25px;
+            flex: 1; padding: 12px 16px; border: 1px solid #ccc; border-radius: 20px;
             font-size: 16px; outline: none; transition: border-color 0.3s ease;
+            background: white;
         }
-        .chat-input:focus { border-color: #667eea; }
+        .chat-input:focus { border-color: #007bff; }
         .chat-input:disabled { background-color: #f5f5f5; cursor: not-allowed; }
         .send-button {
-            padding: 15px 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; border: none; border-radius: 25px; font-size: 16px; font-weight: 600;
-            cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+            padding: 12px 20px; background: #007bff;
+            color: white; border: none; border-radius: 20px; font-size: 16px; font-weight: 500;
+            cursor: pointer; transition: background-color 0.2s ease;
         }
-        .send-button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
-        .send-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        .send-button:hover:not(:disabled) { background: #0056b3; }
+        .send-button:disabled { opacity: 0.5; cursor: not-allowed; }
         .loading { display: none; justify-content: center; padding: 20px; }
         .loading-dots { display: flex; gap: 5px; }
         .loading-dots span {
@@ -406,16 +432,20 @@ def chat():
     <div class="chat-container">
         <div class="chat-header">
             <div class="header-nav">
-                <a href="/" class="back-button">← Back to Home</a>
+                <a href="/" class="back-button">×</a>
             </div>
-            <h1>Payment Safety Assistant</h1>
-            <p>Let me help you verify if your transaction is secure</p>
+            <h1>NAB Messaging</h1>
         </div>
         
         <div class="chat-messages" id="chatMessages">
+            <div style="text-align: center; color: #999; font-size: 14px; margin: 20px 0;">Today</div>
             <div class="message bot-message">
-                <div class="message-content">
-                    Hello! I'm here to help protect you from fraudulent transactions. I'll ask you a few questions to assess the safety of your payment. Let's start!
+                <div class="message-avatar">🍁</div>
+                <div class="message-content-wrapper">
+                    <div class="message-content">
+                        Hello! I'm here to help protect you from fraudulent transactions. I'll ask you a few questions to assess the safety of your payment. Let's start!
+                    </div>
+                    <div class="message-time">8:22 pm</div>
                 </div>
             </div>
         </div>
@@ -517,10 +547,28 @@ def chat():
             addMessage(text, type) {
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `message ${type}-message`;
+                
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'message-avatar';
+                avatarDiv.textContent = type === 'bot' ? '🍁' : '👤';
+                
+                const wrapperDiv = document.createElement('div');
+                wrapperDiv.className = 'message-content-wrapper';
+                
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'message-content';
                 contentDiv.textContent = text;
-                messageDiv.appendChild(contentDiv);
+                
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'message-time';
+                const now = new Date();
+                timeDiv.textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                wrapperDiv.appendChild(contentDiv);
+                wrapperDiv.appendChild(timeDiv);
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(wrapperDiv);
+                
                 this.chatMessages.appendChild(messageDiv);
                 this.scrollToBottom();
             }
