@@ -471,8 +471,8 @@ def chat():
         </div>
         
         <div class="chat-input-container">
-            <input type="text" id="userInput" class="chat-input" placeholder="Type a message" disabled>
-            <button id="sendButton" class="send-button" disabled>Send</button>
+            <input type="text" id="userInput" class="chat-input" placeholder="Type a message">
+            <button id="sendButton" class="send-button">Send</button>
         </div>
         
         <div class="loading" id="loading">
