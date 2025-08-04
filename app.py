@@ -471,8 +471,8 @@ def chat():
         </div>
         
         <div class="chat-input-container">
-            <input type="text" id="userInput" class="chat-input" placeholder="Type a message">
-            <button id="sendButton" class="send-button">Send</button>
+            <input type="text" id="userInput" class="chat-input" placeholder="Type a message" disabled>
+            <button id="sendButton" class="send-button" disabled>Send</button>
         </div>
         
         <div class="loading" id="loading">
@@ -579,15 +579,7 @@ def chat():
                 
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'message-content';
-                // Format the text for better display of risk analysis
-                let formattedText = text;
-                if (text.includes('**RISK LEVEL:') && text.includes('**ANALYSIS:**')) {
-                    formattedText = text
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/• /g, '\n• ')
-                        .replace(/\n/g, '<br>');
-                }
-                contentDiv.innerHTML = formattedText;
+                contentDiv.textContent = text;
                 
                 const timeDiv = document.createElement('div');
                 timeDiv.className = 'message-time';
