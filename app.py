@@ -101,7 +101,7 @@ def perform_fraud_analysis(answers: Dict[str, str]) -> str:
         
         if not api_key:
             print("ERROR: OPENAI_API_KEY not found in environment variables")
-            return 'RISK LEVEL: UNKNOWN\nANALYSIS: OpenAI API key not configured. Please contact administrator.'
+            return '**RISK LEVEL: UNKNOWN**\n\n**ANALYSIS:**\n• OpenAI API key not configured\n• Please contact administrator\n• Cannot perform fraud analysis without API access'
         
         prompt = f"""
 You are a fraud detection expert. Analyze these payment details and provide a risk assessment.
@@ -112,11 +112,16 @@ Payment Details:
 - Source of Payment Link: {answers.get('source_of_payment_link', 'Not provided')}
 - Website/Platform: {answers.get('website_verification', 'Not provided')}
 
-Provide a clear, concise fraud risk assessment (LOW, MEDIUM, or HIGH) with a brief explanation of key risk factors or positive indicators. Keep your response under 150 words and focus on actionable insights for the user.
+Provide a clear, concise fraud risk assessment with key points in bullet format. Keep your response under 150 words and focus on actionable insights.
 
-Format your response as:
-RISK LEVEL: [LOW/MEDIUM/HIGH]
-ANALYSIS: [Your assessment and recommendations]
+Format your response EXACTLY as follows:
+**RISK LEVEL: [LOW/MEDIUM/HIGH]**
+
+**ANALYSIS:**
+• [Key risk factor or positive indicator 1]
+• [Key risk factor or positive indicator 2] 
+• [Key risk factor or positive indicator 3]
+• [Recommendation or next step]
 """
 
         print("DEBUG: About to call OpenAI API")
@@ -137,7 +142,7 @@ ANALYSIS: [Your assessment and recommendations]
         print(f"ERROR: Exception type: {type(e).__name__}")
         import traceback
         print(f"ERROR: Full traceback: {traceback.format_exc()}")
-        return f'RISK LEVEL: UNKNOWN\nANALYSIS: OpenAI API Error: {str(e)}. Please verify payment details independently and consult with your bank if you have concerns.'
+        return f'**RISK LEVEL: UNKNOWN**\n\n**ANALYSIS:**\n• OpenAI API Error: {str(e)}\n• Please verify payment details independently\n• Consult with your bank if you have concerns'
 
 @app.route('/')
 def home():
