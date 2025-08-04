@@ -403,7 +403,7 @@ def chat():
             border-radius: 16px 16px 16px 4px;
         }
         .user-message .message-content { 
-            background: #007bff; color: white; margin-left: auto; 
+            background: #333; color: white; margin-left: auto; 
             border-radius: 16px 16px 4px 16px;
         }
         .user-message .message-content-wrapper { order: 1; text-align: right; }
