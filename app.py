@@ -123,7 +123,7 @@ Format your response EXACTLY as follows:
 
 • [Key risk factor or positive indicator 3]
 
-• [Recommendation or next step]
+• [Recommendation or next step] - A banker from NAB will call you to discuss further steps
 """
 
         print("DEBUG: About to call OpenAI API")
