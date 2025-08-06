@@ -125,7 +125,7 @@ Format your response EXACTLY as follows:
 
 • Recommendation: [Your assessment and recommendations]
 
-**A banker from NAB will call you to discuss further steps and provide additional guidance**
+• **A banker from NAB will call you to discuss further steps and provide additional guidance**
 """
 
         print("DEBUG: About to call OpenAI API")
