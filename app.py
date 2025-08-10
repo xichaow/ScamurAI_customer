@@ -124,8 +124,6 @@ Format your response EXACTLY as follows:
 • [Key risk factor or positive indicator 3]
 
 • Recommendation: [Your assessment and recommendations]
-
-• **A banker from NAB will call you to discuss further steps and provide additional guidance**
 """
 
         print("DEBUG: About to call OpenAI API")
@@ -546,7 +544,12 @@ def chat():
                         if (data.completed && data.fraud_analysis) {
                             setTimeout(() => {
                                 this.addMessage('Based on your responses, here is my fraud risk assessment:', 'bot');
-                                setTimeout(() => this.addFormattedMessage(data.fraud_analysis, 'bot'), 1000);
+                                setTimeout(() => {
+                                    this.addFormattedMessage(data.fraud_analysis, 'bot');
+                                    setTimeout(() => {
+                                        this.addMessage('A banker from NAB will call you to discuss further steps and provide additional guidance.', 'bot');
+                                    }, 1500);
+                                }, 1000);
                             }, 1000);
                             this.disableInput();
                         } else if (!data.completed) {
