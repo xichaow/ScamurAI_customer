@@ -123,7 +123,7 @@ Format your response EXACTLY as follows:
 
 • [Key risk factor or positive indicator 3]
 
-• Recommendation: MUST use exactly this format - "STOP - Don't give money or information to anyone if unsure. CHECK - Ask yourself if the message or call is fake, never click links in messages. PROTECT - Act quickly if something feels wrong, contact your bank immediately."
+• Recommendation: MUST use exactly this format - "STOP - Don't give money or information to anyone if unsure. Scammers pretend to be from trusted organizations. CHECK - Ask yourself if the message or call is fake. Never click links in messages. Only contact businesses using official website or app contact information. PROTECT - Act quickly if something feels wrong. Contact your bank immediately if you notice unusual activity or if a scammer gets your information."
 """
 
         print("DEBUG: About to call OpenAI API")
