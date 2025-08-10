@@ -123,13 +123,7 @@ Format your response EXACTLY as follows:
 
 • [Key risk factor or positive indicator 3]
 
-• [Final risk factor or assessment point]
-
-• Recommendation: ALWAYS include these exact key points following the STOP, CHECK, PROTECT framework:
-  - STOP: Don't give money or information to anyone if unsure
-  - CHECK: Ask yourself if the message or call is fake - never click links in messages
-  - PROTECT: Act quickly if something feels wrong - contact your bank immediately
-  - Only contact businesses using official website or app contact information
+• Recommendation: [Your assessment and recommendations]
 """
 
         print("DEBUG: About to call OpenAI API")
@@ -551,38 +545,10 @@ def chat():
                             setTimeout(() => {
                                 this.addMessage('Based on your responses, here is my fraud risk assessment:', 'bot');
                                 setTimeout(() => {
-                                    // Extract recommendation from analysis and send separately
-                                    let analysisText = data.fraud_analysis;
-                                    let recommendationText = '';
-                                    
-                                    // Check if there's a recommendation line
-                                    const lines = analysisText.split('\n');
-                                    const filteredLines = [];
-                                    
-                                    for (let line of lines) {
-                                        if (line.includes('• Recommendation:')) {
-                                            recommendationText = line.replace('• Recommendation: ', '');
-                                        } else {
-                                            filteredLines.push(line);
-                                        }
-                                    }
-                                    
-                                    // Send the main analysis without recommendation
-                                    this.addFormattedMessage(filteredLines.join('\n'), 'bot');
-                                    
-                                    // Send recommendation as separate message if found
-                                    if (recommendationText) {
-                                        setTimeout(() => {
-                                            this.addFormattedMessage('**Recommendation:** ' + recommendationText, 'bot');
-                                            setTimeout(() => {
-                                                this.addMessage('A banker from NAB will call you to discuss further steps and provide additional guidance.', 'bot');
-                                            }, 1000);
-                                        }, 1000);
-                                    } else {
-                                        setTimeout(() => {
-                                            this.addMessage('A banker from NAB will call you to discuss further steps and provide additional guidance.', 'bot');
-                                        }, 1000);
-                                    }
+                                    this.addFormattedMessage(data.fraud_analysis, 'bot');
+                                    setTimeout(() => {
+                                        this.addMessage('A banker from NAB will call you to discuss further steps and provide additional guidance.', 'bot');
+                                    }, 1500);
                                 }, 1000);
                             }, 1000);
                             this.disableInput();
