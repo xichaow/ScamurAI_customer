@@ -104,7 +104,7 @@ def perform_fraud_analysis(answers: Dict[str, str]) -> str:
             return '**RISK LEVEL: UNKNOWN**\n\n**ANALYSIS:**\n\n• OpenAI API key not configured\n\n• Please contact administrator\n\n• Cannot perform fraud analysis without API access'
         
         prompt = f"""
-You are a fraud detection expert. Analyze these payment details and provide a risk assessment.
+You are a scam detection expert. Analyze these payment details and provide a risk assessment.
 
 Payment Details:
 - Recipient: {answers.get('payment_recipient', 'Not provided')}
@@ -112,7 +112,7 @@ Payment Details:
 - Source of Payment Link: {answers.get('source_of_payment_link', 'Not provided')}
 - Website/Platform: {answers.get('website_verification', 'Not provided')}
 
-Provide a clear, concise fraud risk assessment with key points in bullet format. Keep your response under 150 words and focus on actionable insights.
+Provide a clear, concise scam risk assessment with key points in bullet format. Keep your response under 150 words and focus on actionable insights.
 
 Format your response EXACTLY as follows:
 **RISK LEVEL: [LOW/MEDIUM/HIGH]**
@@ -461,7 +461,7 @@ def chat():
                 <div class="message-avatar"></div>
                 <div class="message-content-wrapper">
                     <div class="message-content">
-                        Hello! I'm here to help protect you from fraudulent transactions. I'll ask you a few questions to assess the safety of your payment. Let's start!
+                        Hello! I'm here to help protect you from scam transactions. I'll ask you a few questions to assess the safety of your payment. Let's start!
                     </div>
                     <div class="message-time">8:22 pm</div>
                 </div>
@@ -543,7 +543,7 @@ def chat():
                         this.addMessage(data.message, 'bot');
                         if (data.completed && data.fraud_analysis) {
                             setTimeout(() => {
-                                this.addMessage('Based on your responses, here is my fraud risk assessment:', 'bot');
+                                this.addMessage('Based on your responses, here is my scam risk assessment:', 'bot');
                                 setTimeout(() => {
                                     this.addFormattedMessage(data.fraud_analysis, 'bot');
                                     setTimeout(() => {
@@ -747,7 +747,7 @@ def move_to_next_question(session):
         
         return jsonify({
             'success': True,
-            'message': 'Thank you for answering all the questions. Let me analyze this information for potential fraud indicators.',
+            'message': 'Thank you for answering all the questions. Let me analyze this information for potential scam indicators.',
             'completed': True,
             'fraud_analysis': fraud_analysis
         })
