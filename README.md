@@ -1,142 +1,202 @@
-# Fraud Investment Chatbot
+# NAB Payment Safety Assistant
 
-A defensive security chatbot designed to help users identify potentially fraudulent transactions through guided questioning and AI-powered fraud detection.
+A Flask-based AI chatbot that helps users identify potentially risky payment requests and scam transactions through conversational AI and expert risk assessment.
 
 ## Features
 
-- **Sequential Question Flow**: Presents 4 core fraud detection questions one at a time
-- **Input Validation**: Validates user responses and re-prompts when answers are off-topic
-- **AI-Powered Analysis**: Uses OpenAI API to assess fraud likelihood
-- **Session Management**: Maintains conversation state throughout the interaction
-- **Responsive UI**: Clean, mobile-friendly chat interface
+- **Interactive Scam Detection**: 4-question assessment covering payment recipient, purpose, source, and platform verification
+- **AI-Powered Risk Analysis**: OpenAI GPT-powered scam risk assessment with LOW/MEDIUM/HIGH classification  
+- **NAB Messaging Interface**: Professional banking UI matching NAB brand standards
+- **STOP-CHECK-PROTECT Framework**: Standardized safety recommendations following established fraud prevention guidelines
+- **Real-time Chat Interface**: Mobile-responsive design with avatar-based messaging
+- **Automatic Banker Follow-up**: Integration with NAB customer service workflow
 
-## Setup
+## Tech Stack
 
-1. **Create Virtual Environment**:
-   ```bash
-   python3 -m venv venv_linux
-   source venv_linux/bin/activate
-   ```
+- **Backend**: Python Flask with OpenAI GPT-3.5-turbo integration
+- **Frontend**: Responsive HTML/CSS/JavaScript with NAB branding
+- **Deployment**: Render cloud platform with GitHub CI/CD
+- **AI Model**: OpenAI GPT-3.5-turbo for intelligent scam detection
 
-2. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Quick Start
 
-3. **Environment Configuration**:
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Edit `.env` and add your OpenAI API key:
-   ```
-   OPENAI_API_KEY=your_openai_api_key_here
-   PORT=8000
-   DEBUG=True
-   ```
+### Local Development
 
-4. **Start the Application**:
-   ```bash
-   # Development mode
-   source venv_linux/bin/activate
-   python main.py
-   
-   # Or using uvicorn directly
-   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-   ```
+1. **Clone the repository:**
+```bash
+git clone https://github.com/xichaow/fraud-chatbot.git
+cd fraud-chatbot
+```
 
-5. **Access the Application**:
-   Open your browser and navigate to `http://localhost:8000`
+2. **Install dependencies:**
+```bash
+pip install flask openai
+```
+
+3. **Set up environment variables:**
+```bash
+export OPENAI_API_KEY="your-openai-api-key-here"
+```
+
+4. **Run the application:**
+```bash
+python app.py
+```
+
+5. **Access the application:**
+- Homepage: http://localhost:8000/
+- Chat Interface: http://localhost:8000/chat
+
+### Production Deployment
+
+The application is configured for Render deployment with automatic GitHub integration.
+
+**Required Environment Variables:**
+- `OPENAI_API_KEY` - Your OpenAI API key (required)
+- `PORT` - Port number (defaults to 8000)  
+- `DEBUG` - Debug mode (defaults to False)
 
 ## How It Works
 
-### The 4 Fraud Detection Questions
+### User Journey
+1. **Welcome**: Professional NAB-branded chat interface
+2. **Assessment**: 4 targeted questions about payment details:
+   - Who are you paying?
+   - What is the payment for?
+   - Where did you get the payment link?
+   - Which website/platform are you using?
+3. **Analysis**: AI-powered scam risk assessment
+4. **Recommendations**: STOP-CHECK-PROTECT safety guidelines
+5. **Follow-up**: Automatic NAB banker callback notification
 
-1. **Payment Recipient**: Who are you making this payment to?
-2. **Purpose of Payment**: What is the purpose of this payment?
-3. **Source of Payment Link**: Where did you get the payment link or instructions from?
-4. **Website Verification**: What website or platform are you using for the payment?
+### Risk Assessment Framework
 
-### Response Validation
+**Risk Levels:**
+- **LOW**: Payment appears legitimate with minimal risk indicators
+- **MEDIUM**: Some concerning factors requiring additional verification
+- **HIGH**: Multiple red flags indicating likely scam attempt
 
-The system validates each response using OpenAI to ensure:
-- Responses are relevant to the current question
-- Answers provide meaningful information
-- Users aren't giving generic or off-topic responses
+**Assessment Criteria:**
+- Recipient legitimacy and verification
+- Payment purpose and context analysis
+- Source credibility of payment requests  
+- Platform/website authenticity checks
 
-### Fraud Analysis
+### Safety Recommendations
 
-After collecting all responses, the system:
-- Sends collected data to OpenAI for fraud risk assessment
-- Provides a risk level (LOW/MEDIUM/HIGH)
-- Offers actionable insights and recommendations
+**STOP-CHECK-PROTECT Framework:**
+- **STOP**: Don't give money or information to anyone if unsure. Scammers pretend to be from trusted organizations.
+- **CHECK**: Ask yourself if the message or call is fake. Never click links in messages. Only contact businesses using official website or app contact information.
+- **PROTECT**: Act quickly if something feels wrong. Contact your bank immediately if you notice unusual activity or if a scammer gets your information.
+
+## API Documentation
+
+### Endpoints
+
+- `GET /` - Landing page with service overview and scam education
+- `GET /chat` - NAB Messaging chat interface
+- `POST /api/chat/start` - Initialize conversation session
+- `POST /api/chat/respond` - Process user responses and provide next questions
+- `GET /static/<filename>` - Serve static assets (NAB branding)
+- `GET /health` - Application health check
+
+### Response Format
+
+**Risk Assessment Output:**
+```
+**RISK LEVEL: [LOW/MEDIUM/HIGH]**
+
+• [Key risk factor or positive indicator 1]
+• [Key risk factor or positive indicator 2] 
+• [Key risk factor or positive indicator 3]
+• Recommendation: [STOP-CHECK-PROTECT framework guidelines]
+```
+
+## Features & Enhancements
+
+### Current Features
+✅ NAB Messaging UI with professional branding  
+✅ Real-time chat with avatars and timestamps  
+✅ Intelligent response validation  
+✅ Structured risk assessment output  
+✅ STOP-CHECK-PROTECT safety framework  
+✅ Automatic banker follow-up workflow  
+
+### Future Enhancements
+🔄 **NAB Data Integration**: Plans to incorporate NAB's internal fraud database and transaction patterns for enhanced accuracy  
+🔄 **Advanced Analytics**: Enhanced scam pattern recognition  
+🔄 **Multi-language Support**: Expand accessibility  
 
 ## Project Structure
 
 ```
-app/
-├── models/
-│   └── schemas.py           # Pydantic models for request/response validation
-├── routes/
-│   └── chat.py              # FastAPI routes for chat functionality
-├── services/
-│   └── conversation_engine.py # Core conversation logic and AI integration
-└── utils/
-    └── dependencies.py      # Dependency injection utilities
-
-static/
-├── css/
-│   └── style.css            # Application styling
-├── js/
-│   └── app.js               # Frontend JavaScript
-└── index.html               # Main HTML file
-
-tests/
-├── test_conversation_engine.py # Unit tests for conversation engine
-└── test_chat_routes.py      # Unit tests for API routes
-
-main.py                      # FastAPI application entry point
-requirements.txt             # Python dependencies
+fraud-chatbot/
+├── app.py                    # Main Flask application
+├── static/
+│   └── nab-icon.jpg         # NAB branding assets
+├── example/
+│   ├── chatbot_snapshot.jpg  # UI design references
+│   ├── chatbot_snapshot2.png
+│   ├── chatbot_snapshot3.PNG
+│   ├── customer_chatbot_snapshot.png
+│   ├── icon.jpg
+│   └── recommendation.jpg   # STOP-CHECK-PROTECT framework
+├── requirements.txt         # Python dependencies
+├── render.yaml             # Render deployment configuration
+└── README.md               # Project documentation
 ```
 
-## API Endpoints
+## The 4 Scam Detection Questions
 
-- `POST /api/chat/start` - Initialize new conversation
-- `POST /api/chat/respond` - Submit user response
-- `GET /api/chat/status/{session_id}` - Get conversation status (debug)
-- `GET /health` - Health check endpoint
+1. **Payment Recipient**: "Who are you making this payment to? Please provide the name of the person, organization, or company."
+
+2. **Purpose of Payment**: "What is the purpose of this payment? Please describe what you are paying for (service, product, investment, etc.)"
+
+3. **Source of Payment Link**: "Where did you get the payment link or payment instructions from? Please share the source (email, website, text message, social media post, etc.)"
+
+4. **Website Verification**: "Please provide the website URL or platform where you are making this payment, or describe how you are accessing the payment page."
 
 ## Testing
 
-Run smoke tests to verify basic functionality:
+### Local Testing
 ```bash
-source venv_linux/bin/activate
-python run_tests.py
+# Run the application locally
+python app.py
+
+# Test the chat interface
+open http://localhost:8000/chat
+
+# Test API endpoints
+curl -X POST http://localhost:8000/api/chat/start \
+  -H "Content-Type: application/json" \
+  -d '{"session_id": "test123"}'
 ```
 
-Run the full test suite (some tests may need OpenAI API key):
+### Health Check
 ```bash
-source venv_linux/bin/activate
-pytest tests/ -v
+curl http://localhost:8000/health
 ```
-
-## Security Features
-
-- Input validation and sanitization
-- Session-based conversation management
-- Secure API key handling
-- Rate limiting considerations built-in
-
-## Development
-
-The application is built with:
-- **Backend**: Python, FastAPI
-- **Frontend**: Vanilla JavaScript, HTML5, CSS3
-- **AI Integration**: OpenAI GPT-3.5-turbo
-- **Session Management**: In-memory storage with automatic cleanup
-- **Validation**: Pydantic models
-- **Testing**: Pytest with asyncio support
 
 ## Contributing
 
-This is a defensive security tool designed to help users identify fraud. All contributions should maintain this focus on user protection and security.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Security & Privacy
+
+- No persistent storage of user conversations
+- Session-based temporary data only  
+- Secure API key management
+- Input validation and sanitization
+- No logging of sensitive payment information
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For technical support or questions about the NAB Payment Safety Assistant, please contact the development team or create an issue in the GitHub repository.
